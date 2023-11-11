@@ -1,11 +1,17 @@
-export const usuarios = [{
+export const usuarios = [/* {
     "id": 0,
     "token": crypto.randomUUID(),
     "correo": "juan22@gmail.com",
     "password": "juan!123456789",
     "name": "Juan",
     "direccion":"cra 46b calle 10ASur #46-66"
-}]
+},{
+    "id": 0,
+    "token": crypto.randomUUID(),
+    "correo": "carla12@gmail.com",
+    "name": "Carla",
+    "direccion":"calle 59a #16-09"
+} */]
 
 export const estilistas = [{
     "id": 0,

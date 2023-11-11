@@ -14,19 +14,18 @@ export const FormularioIni = () => {
 
   const log_in = (e) => {
     e.preventDefault();
-    if (pass.length >= 8 && pass.length <= 15) {
-      let usuario;
-      usuario = usuarios.find((user) => {
-        return user.correo == email;
-      });
-
-      if (usuario.correo === email && usuario.password === pass) {
+    let usuario;
+    usuario = usuarios.find((user) => {
+      return user.correo == email;
+    });
+    if (usuario && usuarios[0] != null) {
+      if (pass.length >= 8 && pass.length <= 15 && pass == usuario.password) {
         window.location.pathname = "/inicio";
       } else {
-        alert("Usuario no existe.");
+        alert("Contraseña incorrecta");
       }
     } else {
-      alert("La contraseña es invalida");
+      alert("El usuario no existe");
     }
   };
 
