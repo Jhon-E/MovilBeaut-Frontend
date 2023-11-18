@@ -2,8 +2,7 @@ import { Avatar, Dropdown, Navbar } from "flowbite-react";
 
 export const Navigation = () => {
   return (
-    <div className="absolute z-10 w-full">
-      <Navbar fluid rounded>
+      <Navbar fluid className=" z-10 sticky w-full bg-slate-200">
         <Navbar.Brand href="https://flowbite-react.com">
           <img
             src="src\assets\MovilBeauté.png"
@@ -47,6 +46,5 @@ export const Navigation = () => {
           <Navbar.Link href="#">Contactos</Navbar.Link>
         </Navbar.Collapse>
       </Navbar>
-    </div>
   );
 };
