@@ -2,9 +2,7 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import "../Styles/styles.css";
 import { useState } from "react";
-import { usuarios } from "../data/users";
-
-("use client");
+import { showData } from "../data/users";
 
 export const FormularioIni = () => {
   const [email, setEmail] = useState("");
@@ -14,19 +12,35 @@ export const FormularioIni = () => {
 
   const log_in = (e) => {
     e.preventDefault();
-    let usuario;
-    usuario = usuarios.find((user) => {
-      return user.correo == email;
-    });
-    if (usuario && usuarios[0] != null) {
-      if (pass.length >= 8 && pass.length <= 15 && pass == usuario.password) {
-        window.location.pathname = "/inicio";
-      } else {
-        alert("Contraseña incorrecta");
-      }
-    } else {
-      alert("El usuario no existe");
-    }
+
+    let usuario = {
+      email: email,
+      password: pass,
+    };
+    console.log(JSON.stringify(usuario));
+    fetch("http://127.0.0.1:8000/validUser", {
+      method: "POST",
+      mode: "cors",
+      headers: {
+        "Content-Type": "application/json",
+      },
+      body: JSON.stringify(usuario),
+    })
+      .then((response) => {
+        if (response.ok) {
+          // Manejar la redirección manualmente en el frontend
+          window.location.href = "http://localhost:5173/inicio";
+        } else {
+          // Manejar otros casos según sea necesario
+          console.error("Error en la autenticación", response.status);
+        }
+      })
+      .then((data) => {
+        console.log("Respuesta del backend:", data);
+      })
+      .catch((error) => {
+        console.error("Error en la redirección:", error);
+      });
   };
 
   return (
@@ -58,9 +72,6 @@ export const FormularioIni = () => {
             type="password"
             onChange={(e) => setPass(e.target.value)}
             required
-            helperText={
-              "La contraseña debe tener minimo 8 carácteres y máximo 15."
-            }
           />
         </div>
         <p>

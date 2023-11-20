@@ -1,34 +1,35 @@
 import { useEffect, useState } from "react";
 import { CardUser } from "./CardUser";
 import { TextInput, Label } from "flowbite-react";
+import { showData } from "../data/users";
 
 export const BuscarComponente = () => {
   const [users, setUsers] = useState([]);
   const [search, setSeacrh] = useState("");
 
-  const URL = "https://jsonplaceholder.typicode.com/users";
-  const showData = async () => {
-    const response = await fetch(URL);
-    const data = await response.json();
+  const obtenerUsuarios = async () => {
+    const data = await showData();
+    console.log("Datos obtenidos:", data);
     setUsers(data);
   };
+
+  useEffect(() => {
+    obtenerUsuarios();
+  }, [search]);
 
   const searcher = (e) => {
     setSeacrh(e.target.value);
   };
 
-  let result = []
-  if(!search){
-    result = users
+  let result = [];
+  if (!search) {
+    result = users;
   } else {
-    result = users.filter( (dato) => 
-      dato.name.toLowerCase().includes(search.toLocaleLowerCase()))
+    result = users.filter((dato) =>
+      dato.name.toLowerCase().includes(search.toLocaleLowerCase())
+    );
   }
 
-  useEffect(() => {
-    showData();
-  }, []);
-  showData();
   return (
     <>
       <Label htmlFor="search" value="Buscar" />
@@ -40,11 +41,12 @@ export const BuscarComponente = () => {
         placeholder="Manicurista-Pedicurista-Barbero-Estilista"
         autoComplete="off"
       />
-      <aside className=" w-full flex items-center justify-center gap-2 overflow-y-hidden ml">
-        <div className="container mr-8"></div>
-        {result.map((user) => (
-          <CardUser nombre={user.name} prof="" key={user.id} />
-        ))}
+      <aside className="container flex items-center h-full">
+        <div className="relative flex-wrap w-full flex items-center justify-center gap-2 overflow-auto h-4/5 p-6">
+          {result.map((user) => (
+            <CardUser nombre={user.name} prof={user.profession} key={user.id} />
+          ))}
+        </div>
       </aside>
     </>
   );

@@ -1,15 +1,14 @@
 import { Button, Checkbox, Label, TextInput } from "flowbite-react";
 import { HiMail, HiUser, HiHome } from "react-icons/hi";
 import "../Styles/styles.css";
-import { usuarios } from "../data/users";
-import { useState } from "react";
-import { registrar } from "./registrarUsuario";
+import { createElement, useState } from "react";
+import { registrar } from "../peticiones/registros";
 
 export const FormularioRe = () => {
   const [name, setName] = useState(null);
   const [email, setEmail] = useState(null);
   const [pass, setPass] = useState(null);
-  const [address, setAddress] = useState(null);
+  const [prof, setProf] = useState(null);
 
   const sig_in = (e) => {
     e.preventDefault();
@@ -19,19 +18,25 @@ export const FormularioRe = () => {
     if (pass.length >= 8 && pass.length <= 15) {
       if (/@gmail.com$/g.test(email)) {
         usuario = {
-          token: crypto.randomUUID(),
-          correo: email,
-          password: pass,
+          email: email,
           name: name,
-          direccion: address,
+          password: pass,
         };
+        if (prof != null) {
+          usuario = {
+            email: email,
+            name: name,
+            password: pass,
+            profession: prof,
+          };
+        }
         registrar(usuario);
-        /* window.location.pathname = "/"; */
+        window.location.pathname = "/";
       } else {
-        alert("Correo invalido")
+        alert("Correo invalido");
       }
     } else {
-      alert("Contraseña invalida")
+      alert("Contraseña invalida");
     }
   };
 
@@ -40,7 +45,7 @@ export const FormularioRe = () => {
       <h1 className=" text-xl block">
         <b>Crear una cuenta</b>
       </h1>
-      <form className="flex max-w-md flex-col gap-4 w-full" onSubmit={sig_in}>
+      <form className="flex max-w-md flex-col gap-4 w-full">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="name" value="Nombre" />
@@ -53,18 +58,7 @@ export const FormularioRe = () => {
             onChange={(e) => setName(e.target.value)}
           />
         </div>
-        <div>
-          <div className="mb-2 block">
-            <Label htmlFor="address" value="Dirección" />
-          </div>
-          <TextInput
-            id="direccion"
-            type="address"
-            icon={HiHome}
-            required
-            onChange={(e) => setAddress(e.target.value)}
-          />
-        </div>
+
         <div>
           <div className="mb-2 block">
             <Label htmlFor="email1" value="Correo" />
@@ -89,6 +83,16 @@ export const FormularioRe = () => {
             onChange={(e) => setPass(e.target.value)}
           />
         </div>
+        <div>
+          <div className="mb-2 block">
+            <Label htmlFor="servicios" value="Servicio a ofrecer" />
+          </div>
+          <TextInput
+            id="servicios"
+            type="text"
+            onChange={(e) => setProf(e.target.value)}
+          />
+        </div>
         <div className="flex items-center gap-2">
           <Checkbox id="termsAcept" defaultChecked required />
           <Label htmlFor="termsAcept" className="flex">
@@ -96,7 +100,7 @@ export const FormularioRe = () => {
           </Label>
         </div>
         <div className="flex items-center gap-2"></div>
-        <Button type="submit">Registrarme</Button>
+        <Button onClick={sig_in}>Registrarme</Button>
       </form>
     </aside>
   );

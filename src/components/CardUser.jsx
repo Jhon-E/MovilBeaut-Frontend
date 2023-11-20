@@ -1,9 +1,12 @@
 import { Card, Dropdown, Avatar } from "flowbite-react";
 
-export const CardUser = ( {nombre, prof}) => {
+export const CardUser = ({ nombre, prof }) => {
+  const solicitado = () => {
+    console.log(nombre)
+  }
   return (
-    <Card className="h-full flex justify-center items-center p-5">
-      <div className="flex flex-col items-center h-full w-40">
+    <Card className="h-auto flex justify-center items-center">
+      <div className="flex flex-col items-center w-40">
         <Avatar
           alt="Bonnie image"
           height="96"
@@ -15,15 +18,13 @@ export const CardUser = ( {nombre, prof}) => {
           {nombre}
         </h5>
         <span className="text-sm text-gray-500 dark:text-gray-400">
-          Barbero
+          {prof}
         </span>
         <div className="mt-4 flex space-x-3 lg:mt-6">
-          <a
-            href="#"
-            className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
-          >
+          <button className="inline-flex items-center rounded-lg bg-cyan-700 px-4 py-2 text-center text-sm font-medium text-white hover:bg-cyan-800 focus:outline-none focus:ring-4 focus:ring-cyan-300 dark:bg-cyan-600 dark:hover:bg-cyan-700 dark:focus:ring-cyan-800"
+          onClick={solicitado}>
             Solicitar
-          </a>
+          </button>
         </div>
       </div>
     </Card>
