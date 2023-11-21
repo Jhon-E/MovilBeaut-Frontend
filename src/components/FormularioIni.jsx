@@ -2,12 +2,11 @@ import { Button, Label, TextInput } from "flowbite-react";
 import { HiMail } from "react-icons/hi";
 import "../Styles/styles.css";
 import { useState } from "react";
-import { showData } from "../data/users";
 
 export const FormularioIni = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
-  const [msg, setMsg] = useState("")
+  const [msg, setMsg] = useState("");
 
   // FUNCION QUE BUSCA Y COMPARA LOS VALORES DE LOS INPUTS CON LA BASE DE DATOS Y CAMBIA DE RUTA EN CASO DE EXITO.
 
@@ -28,18 +27,38 @@ export const FormularioIni = () => {
       body: JSON.stringify(usuario),
     })
       .then((response) => {
-        console.log(response)
+        console.log(response);
         if (response.ok) {
-          window.location.href = "http://localhost:5173/inicio";
+          console.log("1");
+          return response.json();
+          /* window.location.href = "http://localhost:5173/inicio"; */
         } else {
-          // Manejar otros casos según sea necesario
           console.error("Error en la autenticación", response.status);
           return response.json();
         }
       })
       .then((data) => {
-        console.warn("Respuesta del backend:", data.detail);
-        setMsg(data.detail)
+        if (data) {
+          console.log("Respuesta del backend:", data);
+          if (data.detail === "El usuario no existe.") {
+            setMsg("El usuario no existe");
+          } else if (data.detail === "Contraseña incorrecta.") {
+            setMsg("Contraseña incorrecta.");
+          } else {
+            const username = data.username;
+            const email = data.email;
+
+            localStorage.setItem("username", username);
+            localStorage.setItem("email", email);
+
+            console.log("Datos guardados en localStorage:");
+            console.log(localStorage.getItem("username"));
+            console.log(localStorage.getItem("email"));
+
+            // Redirigir a la página de inicio después de guardar los datos
+            window.location.href = "http://localhost:5173/inicio";
+          }
+        }
       })
       .catch((error) => {
         console.error("Error en la redirección:", error);
@@ -51,7 +70,7 @@ export const FormularioIni = () => {
       <h1 className=" text-xl block">
         <b>Iniciar sesión</b>
       </h1>
-      <form className="flex max-w-md flex-col gap-4 w-full" onSubmit={log_in}>
+      <form className="flex max-w-md flex-col gap-4 w-full">
         <div>
           <div className="mb-2 block">
             <Label htmlFor="email1" value="Correo" />
@@ -90,7 +109,7 @@ export const FormularioIni = () => {
           </a>
         </p>
         <div className="flex items-center gap-2"></div>
-        <Button type="submit">Ingresar</Button>
+        <Button onClick={log_in}>Ingresar</Button>
       </form>
     </aside>
   );
