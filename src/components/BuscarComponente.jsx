@@ -44,7 +44,7 @@ export const BuscarComponente = () => {
       <aside className="container flex items-center h-full">
         <div className="relative flex-wrap w-full flex items-center justify-center gap-2 overflow-auto h-4/5 p-6">
           {result.map((user) => (
-            <CardUser nombre={user.name} prof={user.profession} key={user.id} />
+            <CardUser nombre={user.name} prof={user.profession} key={user.id}/>
           ))}
         </div>
       </aside>

@@ -7,6 +7,7 @@ import { showData } from "../data/users";
 export const FormularioIni = () => {
   const [email, setEmail] = useState("");
   const [pass, setPass] = useState("");
+  const [msg, setMsg] = useState("")
 
   // FUNCION QUE BUSCA Y COMPARA LOS VALORES DE LOS INPUTS CON LA BASE DE DATOS Y CAMBIA DE RUTA EN CASO DE EXITO.
 
@@ -27,16 +28,18 @@ export const FormularioIni = () => {
       body: JSON.stringify(usuario),
     })
       .then((response) => {
+        console.log(response)
         if (response.ok) {
-          // Manejar la redirección manualmente en el frontend
           window.location.href = "http://localhost:5173/inicio";
         } else {
           // Manejar otros casos según sea necesario
           console.error("Error en la autenticación", response.status);
+          return response.json();
         }
       })
       .then((data) => {
-        console.log("Respuesta del backend:", data);
+        console.warn("Respuesta del backend:", data.detail);
+        setMsg(data.detail)
       })
       .catch((error) => {
         console.error("Error en la redirección:", error);
@@ -73,6 +76,9 @@ export const FormularioIni = () => {
             onChange={(e) => setPass(e.target.value)}
             required
           />
+        </div>
+        <div>
+          <p className=" font-mono text-red-600 text-xs">{msg}</p>
         </div>
         <p>
           No tengo una cuenta,
